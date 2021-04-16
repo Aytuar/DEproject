@@ -1,0 +1,73 @@
+version: '3'
+
+# Required on Linux:
+# sudo sysctl -w vm.max_map_count=262144
+# https://www.elastic.co/guide/en/elasticsearch/reference/current/vm-max-map-count.html
+
+services:
+
+  zookeeper:
+    image: zookeeper:3.4
+    container_name: zookeeper
+    ports:
+      - 2181:2181
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+
+  kafka:
+    image: wurstmeister/kafka:2.13-2.7.0
+    container_name: kafka
+    ports:
+      - 9092:9092
+    links:
+      - zookeeper
+    environment:
+      KAFKA_ADVERTISED_LISTENERS: "PLAINTEXT://kafka:9092"
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_HOST_NAME: kafka
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.9.0
+    container_name: kibana
+    ports:
+      - 5601:5601
+    environment:
+      ELASTICSEARCH_URL: http://elasticsearch:9200
+      XPACK_SECURITY_ENABLED: "false"
+    depends_on:
+      - elasticsearch
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.9.0
+    container_name: elasticsearch
+    environment:
+      - network.host=0.0.0.0
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx1024m"
+      - bootstrap.memory_lock=true
+      - node.name=es01
+      - cluster.name=es-docker-cluster
+    ports:
+      - 9200:9200
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+
+  streamsets:
+    build:
+      context: ./streamsets
+      args:
+        SDC_LIBS: streamsets-datacollector-elasticsearch_7-lib,streamsets-datacollector-jdbc-lib,streamsets-datacollector-jython_2_7-lib,streamsets-datacollector-orchestrator-lib,streamsets-datacollector-cdh_6_3-lib
+    container_name: streamsets
+    ports:
+      - 18630:18630
+    volumes:
+      - sdc_data:/data
+
+volumes:
+  sdc_data:
+  elasticsearch_data:
