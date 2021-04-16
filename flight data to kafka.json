@@ -2,7 +2,7 @@
   "pipelineConfig" : {
     "schemaVersion" : 6,
     "version" : 22,
-    "pipelineId" : "copycopy54b98b2f-4b91-4557-a9d1-e1d1c7c5ec1b",
+    "pipelineId" : "54b98b2f-4b91-4557-a9d1-e1d1c7c5ec1b",
     "title" : "flight data to kafka",
     "description" : "",
     "uuid" : "c3624a0b-29aa-463a-b369-f87374dc3a6d",

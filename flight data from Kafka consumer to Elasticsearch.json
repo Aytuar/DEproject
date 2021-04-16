@@ -2,7 +2,7 @@
   "pipelineConfig" : {
     "schemaVersion" : 6,
     "version" : 22,
-    "pipelineId" : "Kafkacons57a4cbcd-53cd-44c2-a233-494db45e5c47",
+    "pipelineId" : "57a4cbcd-53cd-44c2-a233-494db45e5c47",
     "title" : "flight data from Kafka consumer to Elasticsearch",
     "description" : "",
     "uuid" : "399b6336-be50-41c6-a26d-a1c6950a9b9e",
