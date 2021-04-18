@@ -61,7 +61,7 @@ services:
     build:
       context: ./streamsets
       args:
-        SDC_LIBS: streamsets-datacollector-elasticsearch_7-lib,streamsets-datacollector-jdbc-lib,streamsets-datacollector-jython_2_7-lib,streamsets-datacollector-orchestrator-lib,streamsets-datacollector-cdh_6_3-lib
+        SDC_LIBS: streamsets-datacollector-elasticsearch_6-lib,streamsets-datacollector-jdbc-lib,streamsets-datacollector-jython_2_7-lib,streamsets-datacollector-orchestrator-lib,streamsets-datacollector-cdh_6_3-lib
     container_name: streamsets
     ports:
       - 18630:18630
